@@ -14,4 +14,10 @@ spring:
   cloud:
     server:
       git:
-        uri:
+        uri: https://github.com/Sourabh2901/MicroServices
+        username: Sourabh2901
+        password: Sourabh@2901
+        clone-on-start: true
+    config:
+      server:
+        bootstrap: true

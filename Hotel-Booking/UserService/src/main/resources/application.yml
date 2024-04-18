@@ -10,6 +10,45 @@ spring:
       ddl-auto: update
     show-sql: true
 
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        recordExceptions:
+          - java.lang.RuntimeException
+          - java.io.IOException
+        ignoreExceptions:
+          - javax.net.ssl.SSLException
+  retry:
+    instance:
+      ratingHotelService:
+        max-attempts: 3
+        wait-duration: 5s
+
+  ratelimiter:
+    instance:
+      userRateLimiter:
+        limit-refresh-period: 4s
+        limit-for-period: 2
+        timeout-duration: 0s
+
 
 eureka:
   instance:
