@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  currency-exchange:
+    image: sr-currency-exchange:0.0.1-SNAPSHOT
+    ports:
+      - "8000:8000"
+    networks:
+      currency-network:
+    depends_on:
+      - service-registry
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://service-registry:8761/eureka
+
+  currency-conversion:
+    image: sr-currency-conversion:0.0.1-SNAPSHOT
+    ports:
+      - "8100:8100"
+    networks:
+      currency-network:
+    depends_on:
+      - service-registry
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://service-registry:8761/eureka
+
+  api-gateway:
+    image: sr-api-gateway:0.0.1-SNAPSHOT
+    ports:
+      - "8765:8765"
+    networks:
+      currency-network:
+    depends_on:
+      - service-registry
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://service-registry:8761/eureka
+
+  service-registry:
+    image: sr-service-registry:0.0.1-SNAPSHOT
+    ports:
+      - "8761:8761"
+    networks:
+      currency-network:
+
+networks:
+  currency-network:
