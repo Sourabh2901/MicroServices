@@ -22,15 +22,15 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @GetMapping("/users/{id}")
-//    public EntityModel<User> getUserById(@PathVariable Integer id){
-//        User user =  userService.getUserById(id);
-//        EntityModel<User> entityModel = EntityModel.of(user);
-//        WebMvcLinkBuilder link = WebMvcLinkBuilder
-//                                .linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllUsers());
-//        entityModel.add(link.withRel("allUsers"));
-//        return entityModel;
-//    }
+    @GetMapping("/users/{id}")
+    public EntityModel<User> getUserById(@PathVariable Integer id){
+        User user =  userService.getUserById(id);
+        EntityModel<User> entityModel = EntityModel.of(user);
+        WebMvcLinkBuilder link = WebMvcLinkBuilder
+                                .linkTo(WebMvcLinkBuilder.methodOn(this.getClass()).getAllUsers());
+        entityModel.add(link.withRel("allUsers"));
+        return entityModel;
+    }
 
     @PostMapping("/users")
     public User addUser(@Valid @RequestBody User user){
@@ -40,7 +40,6 @@ public class UserController {
     @PutMapping("/users/{id}")
     public User updateUser(@PathVariable Integer id , @RequestBody User user){
         return userService.updateUser(id ,user);
-
     }
 
     @DeleteMapping("/users/{id}")
